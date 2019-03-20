@@ -13,7 +13,7 @@ type MemoryPool struct {
 	poolLock sync.Mutex
 }
 
-//Add A Lease To The Pool
+//AddLease adds A Lease To The Pool
 func (t *MemoryPool) AddLease(newLease leasepool.Lease) error {
 	t.poolLock.Lock()
 	defer t.poolLock.Unlock()
@@ -33,7 +33,7 @@ func (t *MemoryPool) AddLease(newLease leasepool.Lease) error {
 	return nil
 }
 
-//Remove a Lease From The Pool
+//RemoveLease removes a Lease From The Pool
 func (t *MemoryPool) RemoveLease(leaseIP net.IP) error {
 	t.poolLock.Lock()
 	defer t.poolLock.Unlock()
@@ -53,7 +53,7 @@ func (t *MemoryPool) RemoveLease(leaseIP net.IP) error {
 	return errors.New("Error: Lease IP \"" + leaseIP.String() + "\" Is Not In The Pool")
 }
 
-//Remove All Leases from the Pool (Required for Persistant LeaseManagers)
+//PurgeLeases removes All Leases from the Pool (Required for Persistant LeaseManagers)
 func (t *MemoryPool) PurgeLeases() error {
 	t.poolLock.Lock()
 	defer t.poolLock.Unlock()
@@ -65,6 +65,10 @@ func (t *MemoryPool) PurgeLeases() error {
 
 /*
  * Get the Lease
+ * -Found
+ * -Copy Of the Lease
+ * -Any Error
+ */GetLease gets the Lease
  * -Found
  * -Copy Of the Lease
  * -Any Error
@@ -89,7 +93,7 @@ func makeKey(macAddress net.HardwareAddr, clientID []byte) []byte {
 	return key
 }
 
-//Get the lease already in use by that hardware address and/or client identifier.
+//GetLeaseForClient gets the lease already in use by that hardware address and/or client identifier.
 func (t *MemoryPool) GetLeaseForClient(macAddress net.HardwareAddr, clientID []byte) (bool, leasepool.Lease, error) {
 	t.poolLock.Lock()
 	defer t.poolLock.Unlock()
@@ -131,6 +135,7 @@ func (t *MemoryPool) GetNextFreeLease() (bool, leasepool.Lease, error) {
 
 /*
  * Return All Leases
+ */GetLeases returns All Leases
  */
 func (t *MemoryPool) GetLeases() ([]leasepool.Lease, error) {
 	return t.pool, nil
@@ -138,6 +143,9 @@ func (t *MemoryPool) GetLeases() ([]leasepool.Lease, error) {
 
 /*
  * Update Lease
+ * - Has Updated
+ * - Error
+ */Update Lease
  * - Has Updated
  * - Error
  */

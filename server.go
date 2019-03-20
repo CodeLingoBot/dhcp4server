@@ -155,6 +155,7 @@ func SetRemoteAddr(a net.UDPAddr) func(*Server) error {
 
 /*
  * Start The DHCP Server
+ */ListenAndServe starts The DHCP Server
  */
 func (s *Server) ListenAndServe() error {
 	var err error
@@ -406,6 +407,7 @@ func (s *Server) ServeDHCP(packet dhcp4.Packet) (dhcp4.Packet, error) {
 
 /*
  * Create DHCP Offer Packet
+ */Create DHCP Offer Packet
  */
 func (s *Server) OfferPacket(discoverPacket dhcp4.Packet) dhcp4.Packet {
 
@@ -457,6 +459,7 @@ func (s *Server) OfferPacket(discoverPacket dhcp4.Packet) dhcp4.Packet {
 
 /*
  * Create DHCP Acknowledgement
+ */Create DHCP Acknowledgement
  */
 func (s *Server) AcknowledgementPacket(requestPacket dhcp4.Packet) dhcp4.Packet {
 
@@ -479,6 +482,7 @@ func (s *Server) AcknowledgementPacket(requestPacket dhcp4.Packet) dhcp4.Packet 
 
 /*
  * Create DHCP Decline
+ */Create DHCP Decline
  */
 func (s *Server) DeclinePacket(requestPacket dhcp4.Packet) dhcp4.Packet {
 
@@ -501,6 +505,8 @@ func (s *Server) DeclinePacket(requestPacket dhcp4.Packet) dhcp4.Packet {
 
 /*
  * Get Lease tries to work out the best lease for the packet supplied.
+ * Taking into account all Requested IP, Exisitng MACAddresses and Free leases.
+ */GetLease gets Lease tries to work out the best lease for the packet supplied.
  * Taking into account all Requested IP, Exisitng MACAddresses and Free leases.
  */
 func (s *Server) GetLease(packet dhcp4.Packet) (found bool, lease leasepool.Lease, err error) {
@@ -548,6 +554,7 @@ func (s *Server) GetLease(packet dhcp4.Packet) (found bool, lease leasepool.Leas
 
 /*
  * Shutdown The Server Gracefully
+ */Shutdown The Server Gracefully
  */
 func (s *Server) Shutdown() {
 	atomic.StoreUint32(&s.shutdown, 1)
@@ -560,6 +567,8 @@ func (s *Server) shouldShutdown() bool {
 
 /*
  * Garbage Collection
+ * Run Garbage Collection On Your Leases To Free Expired Leases.
+ */Garbage Collection
  * Run Garbage Collection On Your Leases To Free Expired Leases.
  */
 func (s *Server) GC() error {
